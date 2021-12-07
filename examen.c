@@ -1,28 +1,6 @@
-/*
-    Escriba un programa en C que dada la siguiente declaración de estructuras:
-
-    typedef struct {
-        char nombre[40];
-        char pais[25];
-    }DatosPersonales;
-
-    typedef struct{
-        DatosPersonales datos;
-        char deporte[30];
-        int numMedallas;
-    }Deportista;
-
-    1. Realice una función que lea de un archivo de TEXTO la información de los deportistas.
-    2. Realice una función que reciba los deportistas leídos y calcule e imprima el número de medallas por
-    deporte.
-
-    Nota: Dentro del código existe un arreglo que contiene los nombres de todos los deportes que existen en el archivo.
-
-        char deporte[6][30] = {"Natación", "Atletismo", "Ciclismo", "Gimnasia", "Equitacion", "Esgrima"};
-*/
-
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 
 typedef struct {
 
@@ -38,12 +16,70 @@ typedef struct{
 
 }Deportista;
 
+void FuncionDeLectura(FILE *archivo, Deportista deportistas[100]);
+void FuncionCOntadoraDeMedallas(Deportista deporstistas[100]);
+
 int main()
 {
+    FILE *archivo;
     Deportista deportistas[100];
-    // Puede cambiar la declaración de este arreglo a donde lo considere necesario
-    char deporte[6][30] = {"Natación", "Atletismo", "Ciclismo", "Gimnasia", "Equitacion", "Esgrima"};
+    
+    FuncionDeLectura(&archivo, deportistas);
+    FuncionCOntadoraDeMedallas(deportistas);
 
+    system("pause");
     return 0;
 }
 
+void FuncionDeLectura(FILE *archivo, Deportista deportistas[100])
+{
+    int cerrado;
+    fopen("deportistas.txt", "r");
+    for (int i = 0; i < 100; i++)
+    {
+        fscanf(archivo, "%s", deportistas[i].datos.nombre);
+        fscanf(archivo, "%s", deportistas[i].datos.pais);
+        fscanf(archivo, "%s", deportistas[i].deporte);
+        fscanf(archivo, "%d", deportistas[i].numMedallas);
+    }
+    
+    cerrado = fclose(archivo);
+}
+
+void FuncionCOntadoraDeMedallas(Deportista deporstistas[100])
+{
+    int numNat, numAtle, numCi, numGim, numEqu, numEs;
+    for (int i = 0; i < 100; i++)
+    {
+        switch (*deporstistas[i].deporte)
+        {
+        case 'Natación':
+         numNat = numNat + 1;
+            break;
+        case 'Atletismo':
+            numAtle = numAtle + 1;
+            break;
+        case 'Ciclismo':
+            numCi = numCi + 1;
+            break;
+        case 'Gimnasia':
+            numGim = numGim + 1;
+            break;
+        case 'Equitacion':
+            numEqu = numEqu + 1;
+            break;
+        case 'Esgrima':
+            numEs = numEs + 1;
+            break;
+        default:
+            break;
+        }
+    } 
+
+    printf("%d medallas de Natacion", numNat);
+    printf("%d medallas de Atletismo",numAtle);
+    printf("%d medallas de Ciclismo",numCi);
+    printf("%d medallas de Gimnasia",numGim);
+    printf("%d medallas de Equitacion",numEqu);
+    printf("%d medallas de Esgrima",numEs);
+}
